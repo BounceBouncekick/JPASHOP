@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
 @Entity
@@ -33,8 +32,6 @@ public class Product {
     private String productname;
 
     private String uuid = UUID.randomUUID().toString();
-
-
 
     @Builder
     public Product(String name, int price, int stockQuantity, String boardwriter, String productname) {

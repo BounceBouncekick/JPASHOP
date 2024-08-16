@@ -2,7 +2,6 @@ package com.example.jpashop.entity;
 
 import com.example.jpashop.dto.DeliveryDto;
 import com.example.jpashop.em.DeliveryStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +25,6 @@ public class Delivery {
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status; //READY, COMP
-
 
     @Builder
     public Delivery(String city, String street, String zipcode) {

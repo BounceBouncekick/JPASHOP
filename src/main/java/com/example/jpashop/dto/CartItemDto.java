@@ -1,6 +1,5 @@
 package com.example.jpashop.dto;
 
-import com.example.jpashop.entity.CartItem;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,7 +10,4 @@ public class CartItemDto {
     private String productName;
     private int quantity;
     private double price;
-
-
-
 }

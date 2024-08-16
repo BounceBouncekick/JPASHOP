@@ -1,7 +1,6 @@
 package com.example.jpashop.entity;
 
 import com.example.jpashop.dto.OrderItemDto;
-import com.example.jpashop.exception.NotEnoughStockException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -50,16 +49,12 @@ public class OrderItem {
     public void setOrder(Order order) {
         this.order = order;
     }
-
-
     public static OrderItem toDTO(OrderItemDto orderItemDTO){
         return OrderItem.builder()
                 .orderPrice(orderItemDTO.getOrderPrice())
                 .count(orderItemDTO.getCount())
                 .build();
     }
-
-
     public static OrderItem createOrderItem(Product product, OrderItemDto orderItemDTO) {
         log.info("createOrderItem : {}", product);
         log.info("createOrderItem2 : {}", orderItemDTO);
@@ -70,15 +65,10 @@ public class OrderItem {
                 .count(orderItemDTO.getCount())
                 .build();
     }
-
     public void cancel(){
         getProduct().addStock(count);
-
     }
-
     public int getTotalPrice(){
         return getOrderPrice() * getCount();
     }
-
-
 }

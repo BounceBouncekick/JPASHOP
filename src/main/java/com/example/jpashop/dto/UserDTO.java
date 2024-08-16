@@ -1,6 +1,5 @@
 package com.example.jpashop.dto;
 
-
 import com.example.jpashop.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,5 +32,4 @@ public class UserDTO {
                 .email(userEntity.getEmail())
                 .build();
     }
-
 }

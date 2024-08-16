@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +27,6 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status; //주문상태
-
-    private double totalAmount; // 매출 금액
 
     private double totalPrice;
 
@@ -57,29 +54,22 @@ public class Order {
 
         return order;
     }
-
     public void cancel() {
 
         this.setStatus(OrderStatus.CANCEL);
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }
-        decreaseTotalAmount(); // 주문 취소 시 매출 금액 감소
+        this.totalPrice = 0;
     }
-
     public void calculateTotalPrice() {
         totalPrice = 0;
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getTotalPrice();
         }
     }
-
     public double getTotalPrice() {
         return totalPrice;
-    }
-
-    private void decreaseTotalAmount() {
-        this.totalAmount -= this.totalPrice;
     }
 }
 

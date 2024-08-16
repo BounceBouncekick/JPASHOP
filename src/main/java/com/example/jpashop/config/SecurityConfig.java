@@ -67,8 +67,9 @@ public class SecurityConfig {
 //                      .requestMatchers("/reissue").permitAll()
 //                      .requestMatchers(new AntPathRequestMatcher("/admin")).hasRole("ADMIN")
 //                      .requestMatchers(new AntPathRequestMatcher("/boards/free")).hasRole("ADMIN")
-//                      .anyRequest().authenticated());
-                        .anyRequest().permitAll());
+//                        .anyRequest().permitAll());
+                        .anyRequest().authenticated());
+
 
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);

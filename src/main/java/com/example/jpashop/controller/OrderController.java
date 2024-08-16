@@ -1,15 +1,13 @@
 package com.example.jpashop.controller;
 
-import com.example.jpashop.dto.OrderItemDto;
+
 import com.example.jpashop.dto.OrderRequestDto;
 import com.example.jpashop.service.Orderservice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
-
 
 @Slf4j
 @RestController
@@ -36,6 +34,4 @@ public class OrderController {
         orderservice.cancelOrder(uuid);
         return ResponseEntity.ok("취소되었습니다.");
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.example.jpashop.controller;
 
 import com.example.jpashop.dto.CartItemDto;
 import com.example.jpashop.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
+@RequiredArgsConstructor
 public class CartController {
 
-    @Autowired
-    private CartService cartService;
+
+    private final CartService cartService;
 
     @PostMapping("/add")
     public ResponseEntity<CartItemDto> addItemToCart(@RequestBody CartItemDto cartItemDto) {
