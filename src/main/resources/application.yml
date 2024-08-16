@@ -19,6 +19,10 @@ spring:
         #        show_sql: true
         format_sql: true
 
+  jwt:
+    secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
+    expiration-time: 3600000000000
+
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace

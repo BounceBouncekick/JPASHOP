@@ -53,8 +53,6 @@ public class SecurityConfig {
         http
                 .csrf((auth) -> auth.disable());
 
-//        http.formLogin(Customizer.withDefaults());
-
         http
                 .formLogin(form -> form.disable());
 
@@ -66,10 +64,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers( "/join","/login").permitAll()
-//                        .requestMatchers("/reissue").permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("/admin")).hasRole("ADMIN")
-//                        .requestMatchers(new AntPathRequestMatcher("/boards/free")).hasRole("ADMIN")
-                        .anyRequest().authenticated());
+//                      .requestMatchers("/reissue").permitAll()
+//                      .requestMatchers(new AntPathRequestMatcher("/admin")).hasRole("ADMIN")
+//                      .requestMatchers(new AntPathRequestMatcher("/boards/free")).hasRole("ADMIN")
+//                      .anyRequest().authenticated());
+                        .anyRequest().permitAll());
 
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
