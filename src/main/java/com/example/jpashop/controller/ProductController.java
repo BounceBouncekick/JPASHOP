@@ -4,10 +4,10 @@ import com.example.jpashop.dto.ProductDto;
 import com.example.jpashop.entity.Product;
 import com.example.jpashop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody ProductDto productDTO) throws IOException {
         productService.create(productDTO);
-        return ResponseEntity.ok("등록되었습니다.");
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     //상품 목록 찾기
@@ -44,15 +44,15 @@ public class ProductController {
 
     //상품수정
     @PostMapping("/update/{uuid}")
-    public ResponseEntity<String> UpdatebyUuid(@PathVariable("uuid")String uuid, @ModelAttribute ProductDto productDTO){
+    public ResponseEntity<?> UpdatebyUuid(@PathVariable("uuid")String uuid, @ModelAttribute ProductDto productDTO){
         productService.update(uuid, productDTO);
-        return ResponseEntity.ok("수정되었습니다.");
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     //상품삭제
     @GetMapping("/delete/{uuid}")
-    public ResponseEntity<String> DeletebyUuid(@PathVariable("uuid") String uuid){
+    public ResponseEntity<?> DeletebyUuid(@PathVariable("uuid") String uuid){
         productService.delete(uuid);
-        return ResponseEntity.ok("삭제되었습니다.");
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
