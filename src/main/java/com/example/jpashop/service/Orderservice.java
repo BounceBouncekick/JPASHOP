@@ -10,6 +10,7 @@ import com.example.jpashop.repository.SalesRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -22,14 +23,22 @@ public class Orderservice {
     private final ProductRepository productRepository;
     private final DeliveryRepository deliveryRepository;
     private final SalesRepository salesRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
+
 
     @Transactional
     public void order(OrderItemDto orderItemDto, String name, String uuid, DeliveryDto deliveryDto) {
-        Optional<Product> optionalItem = Optional.ofNullable(productRepository.findByUuid(uuid));
+        Product product = (Product) redisTemplate.opsForValue().get(uuid);
+        if (product == null) {
+            // Redis에 캐시가 없는 경우, 데이터베이스에서 조회
+            product = productRepository.findByUuid(uuid);
+            if (product != null) {
+                // Redis에 제품 정보를 캐싱
+                redisTemplate.opsForValue().set(uuid, product);
+            }
+        }
 
-        log.info("optionalItem = {}", optionalItem);
-        if (optionalItem.isPresent()) {
-            Product product = optionalItem.get();
+        if (product != null) {
             log.info("Product found: {}", product);
 
             // 상품을 사용하여 주문 상품 생성
@@ -56,6 +65,8 @@ public class Orderservice {
             // 예를 들어, 예외를 던지거나 로그를 남기는 등의 작업 수행
         }
     }
+
+
 
     @Transactional
     public void cancelOrder(String uuid) {

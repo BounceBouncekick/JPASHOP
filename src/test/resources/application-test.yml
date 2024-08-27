@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -16,6 +16,11 @@ spring:
     job:
       enabled: false # 배치 작업 자동 실행 비활성화
     initialize-schema: never # 스키마 초기화를 항상 수행
+
+  redis:
+    host: localhost
+    port: 6379
+    password:
 
 jwt:
   secret: ${JWT_KEY}
