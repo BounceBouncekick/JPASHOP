@@ -7,11 +7,19 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
-        #        show_sql: true // system.out을 출력
         format_sql: true
+
+  batch:
+    job:
+      enabled: false # 배치 작업 자동 실행 비활성화
+    initialize-schema: never # 스키마 초기화를 항상 수행
+
+jwt:
+  secret: ${JWT_KEY}
+  expiration-time: 3600000000000
 
 logging:
   level:
