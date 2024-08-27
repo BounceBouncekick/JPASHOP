@@ -11,6 +11,7 @@
 * JAVA
 * token(JWT,REFRESH)
 * Junit5
+* Redis
 
 
 # 2.기능명세서
