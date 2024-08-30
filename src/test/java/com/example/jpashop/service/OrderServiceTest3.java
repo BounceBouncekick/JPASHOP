@@ -12,6 +12,7 @@ import com.example.jpashop.repository.DeliveryRepository;
 import com.example.jpashop.repository.OrderRepository;
 import com.example.jpashop.repository.ProductRepository;
 import com.example.jpashop.repository.SalesRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,13 +26,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
-@Import({SecurityConfig.class, RedisConfig.class, CacheConfig.class})// 테스트용 보안 설정 적용
-public class OrderServiceTest2 {
+@Import({SecurityConfig.class, RedisConfig.class, CacheConfig.class}) // 테스트용 보안 설정 적용
+public class OrderServiceTest3 {
 
     @MockBean
     private JWTUtil jwtUtil; // JWTUtil을 Mocking
@@ -54,6 +58,8 @@ public class OrderServiceTest2 {
     @Autowired
     private DeliveryRepository deliveryRepository;
 
+    private ExecutorService executorService;
+
     @BeforeEach
     @Test
     public void setUp() {
@@ -63,23 +69,25 @@ public class OrderServiceTest2 {
         salesRepository.deleteAll();
         // Redis에 있는 기존 데이터를 모두 삭제하여 초기화합니다.
         redisTemplate.getConnectionFactory().getConnection().flushAll();
+
+        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
     }
 
     @Test
     public void testDatabaseAndRedisInitialization() {
         // 데이터베이스 초기화 검증
-        assertThat(orderRepository.count()).isEqualTo(0); // 주문 테이블이 비어있는지 확인
-        assertThat(productRepository.count()).isEqualTo(0); // 상품 테이블이 비어있는지 확인
-        assertThat(deliveryRepository.count()).isEqualTo(0); // 배송 테이블이 비어있는지 확인
-        assertThat(salesRepository.count()).isEqualTo(0); // 판매 테이블이 비어있는지 확인
+        Assertions.assertThat(orderRepository.count()).isEqualTo(0); // 주문 테이블이 비어있는지 확인
+        Assertions.assertThat(productRepository.count()).isEqualTo(0); // 상품 테이블이 비어있는지 확인
+        Assertions.assertThat(deliveryRepository.count()).isEqualTo(0); // 배송 테이블이 비어있는지 확인
+        Assertions.assertThat(salesRepository.count()).isEqualTo(0); // 판매 테이블이 비어있는지 확인
 
         // Redis 초기화 검증
-        assertThat(redisTemplate.keys("*").isEmpty()).isTrue(); // Redis에 저장된 키가 없는지 확인
+        Assertions.assertThat(redisTemplate.keys("*").isEmpty()).isTrue(); // Redis에 저장된 키가 없는지 확인
     }
 
     @Test
     @Transactional
-    public void testOrderSuccessWithLargeNumberOfOrders() {
+    public void testOrderSuccessWithLargeNumberOfOrders() throws InterruptedException {
         // Given
         int numberOfProducts = 100;  // 생성할 상품 개수
         int numberOfOrders = 100000;  // 생성할 주문 개수
@@ -128,9 +136,13 @@ public class OrderServiceTest2 {
                     .zipcode(zipcode)
                     .build();
 
-            // 주문 생성
-            orderService.order(orderItemDto, product.getName(), product.getUuid(), deliveryDto);
+            // 비동기로 주문 생성
+            executorService.submit(() -> orderService.order(orderItemDto, product.getName(), product.getUuid(), deliveryDto));
         }
+
+        // ExecutorService 종료 후 모든 작업이 완료될 때까지 대기
+        executorService.shutdown();
+        executorService.awaitTermination(30, TimeUnit.MINUTES);
 
         long endTime = System.currentTimeMillis();
 
@@ -142,5 +154,3 @@ public class OrderServiceTest2 {
         System.out.println(numberOfOrders + "개의 주문을 저장하는 데 걸린 시간: " + (endTime - startTime) + "ms");
     }
 }
-
-
