@@ -24,7 +24,10 @@ public class Delivery {
     private String zipcode;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus status; //READY, COMP
+    private DeliveryStatus status;
+
+    @OneToOne(mappedBy = "delivery")  // Order와의 양방향 일대일 관계 설정
+    private Order order;
 
     @Builder
     public Delivery(String city, String street, String zipcode) {
@@ -48,5 +51,9 @@ public class Delivery {
                 .street(deliveryDto.getStreet())
                 .zipcode(deliveryDto.getZipcode())
                 .build();
+    }
+
+    public void DeliveryCancel(){
+        this.status = DeliveryStatus.Cancel;
     }
 }

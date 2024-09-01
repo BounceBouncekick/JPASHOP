@@ -3,6 +3,11 @@ package com.example.jpashop.service;
 import com.example.jpashop.dto.DeliveryDto;
 import com.example.jpashop.dto.OrderItemDto;
 import com.example.jpashop.entity.*;
+import com.example.jpashop.postorder.DeliveryPostOrder;
+import com.example.jpashop.postorder.SalesUpdatePostOrder;
+import com.example.jpashop.postorder.StockReductionPostOrder;
+import com.example.jpashop.postorder.PostOrder;
+import com.example.jpashop.postordercancel.SubtractSales;
 import com.example.jpashop.repository.DeliveryRepository;
 import com.example.jpashop.repository.OrderRepository;
 import com.example.jpashop.repository.ProductRepository;
@@ -54,24 +59,14 @@ public class Orderservice {
                 final Product finalProduct = product;
                 final int orderCount = orderItemDto.getCount();
 
-                // 비동기로 작업 수행
-                executorService.submit(() -> {
-                    // 배송 정보 생성 및 저장
-                    Delivery delivery = Delivery.createDelivery(deliveryDto);
-                    deliveryRepository.save(delivery);
-                });
+                PostOrder deliveryStrategy = new DeliveryPostOrder(deliveryRepository, deliveryDto);
+                executorService.submit(() -> deliveryStrategy.execute(order));
 
-                executorService.submit(() -> {
-                    // 재고 차감
-                    finalProduct.removeStock(orderCount);
-                });
+                PostOrder stockReductionStrategy = new StockReductionPostOrder(finalProduct, orderCount);
+                executorService.submit(() -> stockReductionStrategy.execute(order));
 
-                executorService.submit(() -> {
-                    // 판매 금액 업데이트
-                    Sales sales = salesRepository.findById(1L).orElse(new Sales());
-                    sales.addToTotalSales(order.getTotalPrice());
-                    salesRepository.save(sales);
-                });
+                PostOrder salesUpdateStrategy = new SalesUpdatePostOrder(salesRepository);
+                executorService.submit(() -> salesUpdateStrategy.execute(order));
 
             } else {
                 log.warn("Product not found for UUID: {}", uuid);
@@ -85,19 +80,13 @@ public class Orderservice {
     public void cancelOrder(String uuid) {
         // 주문 엔티티 조회
         Order order = orderRepository.findByUuid(uuid);
-        log.info("cancelOrder : {}", order);
-
         if (order != null) {
             double originalPrice = order.getTotalPrice(); // 원래 주문 가격을 가져옴
-            log.info("취소_originalPrice :{}",originalPrice);
-            // 주문 취소
+
             order.cancel();
             orderRepository.save(order); // 취소 상태를 저장
 
-            // 취소된 주문 금액을 총 매출액에서 빼기
-            Sales sales = salesRepository.findById(1L).orElse(new Sales());
-            sales.subtractFromTotalSales(originalPrice);
-            salesRepository.save(sales);
+            new SubtractSales(salesRepository).execute(originalPrice);
         }
     }
 }

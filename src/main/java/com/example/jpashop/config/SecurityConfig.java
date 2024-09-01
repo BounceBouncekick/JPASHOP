@@ -67,8 +67,8 @@ public class SecurityConfig {
 //                      .requestMatchers("/reissue").permitAll()
 //                      .requestMatchers(new AntPathRequestMatcher("/admin")).hasRole("ADMIN")
 //                      .requestMatchers(new AntPathRequestMatcher("/boards/free")).hasRole("ADMIN")
-//                        .anyRequest().permitAll());
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
+//                        .anyRequest().authenticated());
 
 
         http
