@@ -40,6 +40,10 @@
 ## 배송
 * 주소 등록
 
+# 성능 개선
+* Redis를 통해 대량 주문 단축 ([자세히보기](https://boudle.tistory.com/30))
+
+
 # 3.ERD
 
 ![JPASHOP](https://github.com/user-attachments/assets/6907a952-8944-49a7-9a53-969d70d5565e)
