@@ -41,8 +41,9 @@
 * 주소 등록
 
 # 성능 개선
-* Redis캐칭을 통해 주문시간단축 98,971ms -> 11,680ms [88%의 감소]([자세히보기](https://boudle.tistory.com/30))
-* 비동기 처리도입 Redis캐칭 상품 100개 100000만개 주문 54890ms -> Executorservice + Redis 캐칭 상품 100개 100000만개 주문시간단축 22779ms [58% 감소] ([자세히보기] (https://boudle.tistory.com/33)
+* Redis캐칭을 통해 주문시간단축 98,971ms -> 11,680ms [88%의 감소] ([자세히보기](https://boudle.tistory.com/30)) 
+* 비동기 처리도입 Redis캐칭 상품 100개 100000만개 주문 54890ms ->
+  Executorservice + Redis 캐칭 상품 100개 100000만개 주문시간단축 22779ms [58% 감소] ([자세히보기](https://boudle.tistory.com/33))
 
 
 # 3.ERD
