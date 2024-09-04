@@ -46,6 +46,9 @@
   Executorservice + Redis 캐칭 상품 100개 100000만개 주문시간단축 22779ms [58% 감소] ([자세히보기](https://boudle.tistory.com/33))
 * JPA N+1 @Fetch(FetchMode.SUBSELECT)를 이용하여 문제 해결([자세히보기](https://boudle.tistory.com/35))
 
+# 코드 개선
+* 전략패턴으로 코드 개선
+
 
 # 3.ERD
 
