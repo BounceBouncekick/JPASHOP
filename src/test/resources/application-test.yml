@@ -7,15 +7,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
-
-  batch:
-    job:
-      enabled: false # 배치 작업 자동 실행 비활성화
-    initialize-schema: never # 스키마 초기화를 항상 수행
+        jdbc:
+          batch_size: 10  # Hibernate 배치 크기 설정
 
   redis:
     host: localhost
@@ -29,5 +26,7 @@ jwt:
 logging:
   level:
     org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql: trace  # SQL 명령어 바인딩 정보 로그
+    org.hibernate.engine.jdbc.batch.internal: trace  # 배치 처리 내부 로그
 
 

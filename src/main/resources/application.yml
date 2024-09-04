@@ -6,10 +6,9 @@ spring:
     name: shop-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MySQL_URL}
-    username: ${MySQL_USERNAME}
-    password: ${MySQL_PASSWORD}
-
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
@@ -17,7 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        default_batch_fetch_size: 10  # Batch Size 설정 추가
+        batch_fetch_size: 10  # Batch Size 설정 추가
 
   redis:
     host: localhost

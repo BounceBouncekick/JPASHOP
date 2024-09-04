@@ -13,7 +13,7 @@ import java.util.Date;
 @Slf4j
 public class JWTUtil {
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
 
     public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
 

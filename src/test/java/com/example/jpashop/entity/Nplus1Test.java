@@ -40,7 +40,7 @@ public class Nplus1Test {
     @Transactional
     public void testBatchSizeAndSubselectFetch() {
         // Given
-        int numberOfOrders = 1000;   // 주문의 수
+        int numberOfOrders = 5000;   // 주문의 수
         int itemsPerOrder = 2;       // 각 주문에 포함될 주문 항목의 수
 
         for (int i = 0; i < numberOfOrders; i++) {
@@ -55,7 +55,7 @@ public class Nplus1Test {
                         .productname("ProductName " + j)
                         .build();
 
-                productRepository.save(product);
+                productRepository.save(product);  // Product 저장
 
                 OrderItem item = OrderItem.builder()
                         .orderPrice(product.getPrice())
@@ -67,9 +67,16 @@ public class Nplus1Test {
             }
 
             orderRepository.save(order); // Order와 연관된 OrderItem을 함께 저장
+
+            // 매 10개의 주문마다 flush 및 clear를 호출하여 배치 처리를 강제
+            if (i % 10 == 0) {
+                entityManager.flush();  // SQL을 배치로 실행
+                entityManager.clear();  // 1차 캐시를 비워서 메모리 관리 및 N+1 문제 방지
+            }
         }
 
-        entityManager.clear(); // 1차 캐시 초기화 (DB로부터 데이터를 다시 가져오도록 강제)
+        entityManager.flush();  // 남은 SQL 배치 실행
+        entityManager.clear();  // 1차 캐시 초기화 (DB로부터 데이터를 다시 가져오도록 강제)
 
         // When
         long startTime = System.currentTimeMillis();
