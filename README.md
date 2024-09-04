@@ -47,7 +47,7 @@
 * JPA N+1 @Fetch(FetchMode.SUBSELECT)를 이용하여 문제 해결([자세히보기](https://boudle.tistory.com/35))
 
 # 코드 개선
-* 전략패턴으로 비즈니스 로직 분리
+* 전략패턴으로 비즈니스 로직 분리 ([자세히보기](https://boudle.tistory.com/36))
 
 
 # 3.ERD
