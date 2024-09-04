@@ -50,7 +50,7 @@
 * 전략패턴으로 비즈니스 로직 분리 ([자세히보기](https://boudle.tistory.com/36))
 
 # 배포
-* 배포 
+* 배포 ([자세히보기](https://boudle.tistory.com/37))
 
 
 # 3.ERD
