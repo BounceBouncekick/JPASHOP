@@ -12,6 +12,7 @@
 * token(JWT,REFRESH)
 * Junit5
 * Redis
+* docker
 
 
 # 2.기능명세서
