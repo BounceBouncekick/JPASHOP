@@ -45,7 +45,7 @@
 * Redis캐칭을 통해 주문시간단축 98,971ms -> 11,680ms [88%의 감소] ([자세히보기](https://boudle.tistory.com/30)) 
 * 비동기 처리도입 
   - Redis캐칭 상품 100개 100000만개 주문 54890ms ->
-  - Executorservice + Redis 캐칭 상품 100개 100000만개 주문시간단축 22779ms [58% 감소] ([자세히보기](https://boudle.tistory.com/33))
+    Executorservice + Redis 캐칭 상품 100개 100000만개 주문시간단축 22779ms [58% 감소] ([자세히보기](https://boudle.tistory.com/33))
 * JPA N+1 @Fetch(FetchMode.SUBSELECT)를 이용하여 문제 해결([자세히보기](https://boudle.tistory.com/35))
 
 # 코드 개선
