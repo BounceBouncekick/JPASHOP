@@ -51,6 +51,8 @@
 # 코드 개선
 * 전략패턴으로 비즈니스 로직 분리 ([자세히보기](https://boudle.tistory.com/36))
 * SpringSecurity 기본페이지설정인 withDefalut를 안 쓰고 AntPathRequestMatcher를 쓴 이유([자세히보기](https://boudle.tistory.com/38))
+* testDB 분리 ([자세히보기](https://boudle.tistory.com/39))
+* test코드에서 Security.config 등 다른 config사용하기([자세히보기](https://boudle.tistory.com/40))
 
 # 배포
 * 배포 ([자세히보기](https://boudle.tistory.com/37))
